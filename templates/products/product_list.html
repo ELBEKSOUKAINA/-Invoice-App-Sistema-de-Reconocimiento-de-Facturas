@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Productos - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Lista de Productos</h1>
+    {% if user.groups.filter.name == 'Encargador' %}
+    <a href="{% url 'products:product_create' %}" class="btn btn-primary">Nuevo Producto</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if product_list %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in product_list %}
+                    <tr>
+                        <td>{{ product.nombre }}</td>
+                        <td>{{ product.codigo|default:"-" }}</td>
+                        <td>€{{ product.precio }}</td>
+                        <td>{{ product.stock }} unidades</td>
+                        <td>
+                            <span class="badge bg-info">
+                                {{ product.get_tipo_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-{% if product.activo %}success{% else %}danger{% endif %}">
+                                {{ product.activo|yesno:"Activo,Inactivo" }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'products:product_detail' product.id %}" class="btn btn-outline-primary">Ver</a>
+                                
+                                {% if user.groups.filter.name == 'Encargador' %}
+                                <a href="{% url 'products:product_edit' product.id %}" class="btn btn-outline-secondary">Editar</a>
+                                <a href="{% url 'products:product_delete' product.id %}" class="btn btn-outline-danger">Eliminar</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <p class="text-muted">No hay productos registrados.</p>
+            {% if user.groups.filter.name == 'Encargador' %}
+            <a href="{% url 'products:product_create' %}" class="btn btn-primary">Agregar Primer Producto</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

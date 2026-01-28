@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Facturas - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Facturas</h1>
+    {% if user.groups.filter.name == 'Encargador' %}
+    <a href="{% url 'invoices:invoice_create' %}" class="btn btn-primary">Nueva Factura</a>
+    {% else %}
+    <a href="{% url 'invoices:invoice_create' %}" class="btn btn-primary">Crear Mi Factura</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if invoice_list %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        {% if user.groups.filter.name == 'Encargador' %}
+                        <th>Cliente</th>
+                        {% endif %}
+                        <th>Fecha</th>
+                        <th>Vencimiento</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoice_list %}
+                    <tr>
+                        <td>
+                            <strong>{{ invoice.numero }}</strong>
+                        </td>
+                        {% if user.groups.filter.name == 'Encargador' %}
+                        <td>{{ invoice.cliente.nombre }}</td>
+                        {% endif %}
+                        <td>{{ invoice.fecha|date:"d/m/Y" }}</td>
+                        <td>
+                            <span class="{% if invoice.is_overdue %}text-danger{% endif %}">
+                                {{ invoice.vencimiento|date:"d/m/Y" }}
+                            </span>
+                        </td>
+                        <td><strong>€{{ invoice.total }}</strong></td>
+                        <td>
+                            <span class="badge 
+                                {% if invoice.estado == 'pagada' %}bg-success
+                                {% elif invoice.estado == 'enviada' %}bg-warning
+                                {% elif invoice.estado == 'borrador' %}bg-secondary
+                                {% else %}bg-danger{% endif %}">
+                                {{ invoice.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'invoices:invoice_detail' invoice.id %}" class="btn btn-outline-primary">Ver</a>
+                                
+                                {% if user.groups.filter.name == 'Encargador' %}
+                                <a href="{% url 'invoices:invoice_edit' invoice.id %}" class="btn btn-outline-secondary">Editar</a>
+                                <a href="{% url 'invoices:invoice_delete' invoice.id %}" class="btn btn-outline-danger">Eliminar</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-4">
+            <p class="text-muted">No hay facturas registradas.</p>
+            <a href="{% url 'invoices:invoice_create' %}" class="btn btn-primary">Crear Primera Factura</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

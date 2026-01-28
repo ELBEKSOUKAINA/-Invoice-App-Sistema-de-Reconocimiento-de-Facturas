@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Cliente - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1> Detalle de Cliente</h1>
+    <div>
+        <a href="{% url 'clients:client_edit' client.id %}" class="btn btn-warning"> Editar</a>
+        <a href="{% url 'clients:client_list' %}" class="btn btn-primary"> Volver a la lista</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Información Personal</h5>
+                <p><strong>Nombre:</strong> {{ client.nombre }}</p>  {# name → nombre #}
+                <p><strong>Email:</strong> {{ client.email|default:"No especificado" }}</p>
+                <p><strong>Teléfono:</strong> {{ client.telefono|default:"No especificado" }}</p>  {# phone → telefono #}
+                <p><strong>Tipo:</strong> 
+                    <span class="badge bg-{% if client.tipo == 'individual' %}info{% else %}warning{% endif %}">
+                        {{ client.get_tipo_display }}  {# client_type → tipo #}
+                    </span>
+                </p>
+                <p><strong>Estado:</strong> 
+                    <span class="badge bg-{% if client.activo %}success{% else %}danger{% endif %}">
+                        {{ client.activo|yesno:"Activo,Inactivo" }}
+                    </span>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h5>Dirección</h5>
+                <p>{{ client.direccion|default:"No especificada"|linebreaks }}</p>  {# address → direccion #}
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <p><strong>Fecha de creación:</strong> {{ client.fecha_creacion|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

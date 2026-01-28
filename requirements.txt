@@ -1,0 +1,32 @@
+# Django Core (funciona sin privilegios)
+Django==4.2.7
+djangorestframework==3.14.0
+
+# OCR Online (sin necesidad de Tesseract)
+pytesseract==0.3.10  # Solo si tienes tesseract portable
+easyocr==1.7.0       # OCR puro en Python (alternativa)
+pdf2image==1.16.3
+
+# Procesamiento de Imágenes (puro Python)
+Pillow==10.1.0
+opencv-python-headless==4.8.1.78  # Sin dependencias GUI
+
+# Extracción de texto de PDFs
+PyPDF2==3.0.1
+pdfplumber==0.10.3
+
+# Utilidades
+python-dateutil==2.8.2
+python-decouple==3.8  # Para variables de entorno sin .env
+requests==2.31.0
+
+# Validación
+phonenumbers==8.13.26
+
+# Desarrollo
+pytest==7.4.3
+pytest-django==4.7.0
+
+# Producción (opcional)
+gunicorn==21.2.0
+whitenoise==6.6.0

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Factura{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Nueva Factura</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3>Datos de la Factura</h3>
+        {{ form.as_p }}
+        
+        <h3>Productos</h3>
+        {{ item_formset.management_form }}
+        
+        <table class="table" id="tabla-productos">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody id="productos-body">
+                {% for form in item_formset %}
+                <tr class="fila-producto">
+                    <td>{{ form.producto }}</td>
+                    <td>{{ form.cantidad }}</td>
+                    <td>{{ form.precio_unitario }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-success" id="btn-add">+ Añadir Producto</button>
+        <button type="submit" class="btn btn-primary">Guardar Factura</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('btn-add').onclick = function() {
+    alert('Botón funciona');
+}
+</script>
+{% endblock %}

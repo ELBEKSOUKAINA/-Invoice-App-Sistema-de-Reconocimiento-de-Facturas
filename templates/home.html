@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}InvoiceApp - Inicio{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1>InvoiceApp</h1>
+        <p class="lead">Sistema de facturación</p>
+        
+        <div class="mt-5 p-4 border rounded">
+            <h2>¿Eres cliente nuevo?</h2>
+            <p>Regístrate para comenzar</p>
+            <a href="{% url 'register' %}" class="btn btn-primary">Registrarse</a>
+            <p class="mt-3">
+                ¿Ya tienes cuenta? 
+                <a href="{% url 'login' %}">Iniciar Sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

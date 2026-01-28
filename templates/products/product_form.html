@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.id %}Editar{% else %}Nuevo{% endif %} Producto - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">{% if form.instance.id %}Editar{% else %}Nuevo{% endif %} Producto</h2>
+            </div>
+            <div class="card-body">
+                
+                {% if user.groups.filter.name != 'Encargador' %}
+                <div class="alert alert-danger">
+                    <h4 class="alert-heading">Acceso Denegado</h4>
+                    <p>No tienes permiso para {% if form.instance.id %}editar{% else %}crear{% endif %} productos.</p>
+                    <hr>
+                    <a href="{% url 'products:product_list' %}" class="btn btn-primary">Volver a la lista</a>
+                </div>
+                {% else %}
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% if field.errors %}
+                        <div class="alert alert-danger mt-1">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.classList.add('form-control');
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Panel del Encargador</h1>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar Sesión</a>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card border">
+                    <div class="card-header bg-primary text-white">
+                        <h4>Clientes</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Gestiona todos los clientes del sistema</p>
+                        <a href="{% url 'clients:client_list' %}" class="btn btn-primary">Ver Clientes</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border">
+                    <div class="card-header bg-success text-white">
+                        <h4>Productos</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Administra el catálogo completo de productos</p>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-success">Ver Productos</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border">
+                    <div class="card-header bg-warning">
+                        <h4>Facturas</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Gestiona todas las facturas del sistema</p>
+                        <a href="{% url 'invoices:invoice_list' %}" class="btn btn-warning">Ver Facturas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <strong>Encargador:</strong> Tienes acceso completo a clientes, productos y todas las facturas.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de Producto - InvoiceApp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Detalle de Producto</h1>
+    <div>
+        {% if user.groups.filter.name == 'Encargador' %}
+        <a href="{% url 'products:product_edit' product.id %}" class="btn btn-warning">Editar</a>
+        {% endif %}
+        <a href="{% url 'products:product_list' %}" class="btn btn-primary">Volver a la lista</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Información del Producto</h5>
+                <p><strong>Nombre:</strong> {{ product.nombre }}</p>
+                <p><strong>Código:</strong> {{ product.codigo }}</p>
+                <p><strong>Tipo:</strong> {{ product.get_tipo_display }}</p>
+            </div>
+            <div class="col-md-6">
+                <h5>Precio y Stock</h5>
+                <p><strong>Precio:</strong> €{{ product.precio }}</p>
+                <p><strong>Stock:</strong> {{ product.stock }} unidades</p>
+                <p><strong>Estado:</strong> 
+                    <span class="badge bg-{% if product.activo %}success{% else %}danger{% endif %}">
+                        {{ product.activo|yesno:"Activo,Inactivo" }}
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        {% if product.descripcion %}
+        <div class="mt-4">
+            <h5>Descripción</h5>
+            <p>{{ product.descripcion|linebreaks }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="mt-4">
+            <p><strong>Fecha de creación:</strong> {{ product.fecha_creacion|date:"d/m/Y H:i" }}</p>
+            <p><strong>Última actualización:</strong> {{ product.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+        </div>
+        
+        <div class="mt-4">
+            <div class="alert alert-info">
+                <small>
+                    <strong>Información de acceso:</strong><br>
+                    {% if user.groups.filter.name == 'Encargador' %}
+                        - Tienes permisos completos (puedes editar y eliminar)
+                    {% else %}
+                        - Como cliente solo puedes ver la información
+                        - No puedes editar ni eliminar productos
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
